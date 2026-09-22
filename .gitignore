@@ -1,0 +1,33 @@
+# Виртуальные окружения Python (абсолютно любые варианты расположения)
+venv/
+.venv/
+env/
+ENV/
+backend/venv/
+backend/.venv/
+
+# Кэш Python компилятора
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+
+# Зависимости и сборка Node.js (Frontend)
+node_modules/
+dist/
+build/
+.next/
+.nuxt/
+
+# Конфигурационные файлы с секретами (пароли, ключи)
+.env
+.env.local
+.env.*.local
+backend/.env
+frontend/.env
+
+# Файлы настроек редакторов кода и IDE
+.idea/
+.vscode/
