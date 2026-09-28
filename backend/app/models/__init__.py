@@ -6,3 +6,4 @@ from app.models.step import Step                                                
 from app.models.question import Question, QuizOption                                # Модели вопросов
 from app.models.media import Media                                                  # Модель медиа
 from app.models.progress import UserProgress                                        # Модель прогресса
+from app.models.review import Review                                                # Модель отзывов пользователей

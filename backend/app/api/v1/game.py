@@ -275,9 +275,11 @@ async def verify_answer(
         }
     else:
         # 9. ФИНАЛ КВЕСТА: Если шагов больше нет, закрываем игру с победой
-        progress.status = "completed"                                                   # Меняем статус сессии на завершенный
-        progress.finished_at = datetime.now(timezone.utc)                               # Пишем точное время триумфа
-        await db.commit()                                                               # Фиксируем всё в базе данных
+        progress.status = "completed"
+        progress.finished_at = datetime.now(timezone.utc)
+        current_user.total_lifetime_score += progress.total_score                       # ПЛЮСУЕМ ОЧКИ В ОБЩИЙ ПРОФИЛЬ ЮЗЕРА
+        await db.commit()
+                                                               # Фиксируем всё в базе данных
         return {
             "success": True,
             "message": "Поздравляем! Вы полностью прошли этот квест!",

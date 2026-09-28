@@ -10,6 +10,8 @@ from app.core.security import hash_password, verify_password, create_access_toke
 from app.database.session import get_db
 from app.models.user import User
 from app.schemas.user import UserCreate, UserResponse, Token
+from app.api.v1.deps import get_current_user                              
+
 
 # Создаем изолированный роутер для авторизации
 router = APIRouter(prefix="/auth", tags=["Auth"])
@@ -81,3 +83,19 @@ async def login(
     
     # 5. Возвращаем токен согласно нашей Pydantic схеме Token
     return {"access_token": access_token, "token_type": "bearer"}
+
+
+@router.get("/me", response_model=UserResponse)
+async def get_me(current_user: User = Depends(get_current_user)):
+    """ Возвращает профиль текущего пользователя по JWT-токену для сохранения сессии """
+    return current_user                                                                 # Отдаем объект юзера из токена
+
+
+@router.patch("/role", response_model=UserResponse)
+async def change_role(new_role: str, db: AsyncSession = Depends(get_db), current_user: User = Depends(get_current_user)):
+    """ Меняет роль пользователя с player на author или наоборот """
+    if new_role not in ["player", "author"]:                                            # Проверяем валидность роли
+        raise HTTPException(status_code=400, detail="Неверная роль")                   # Отсекаем левые строки
+    current_user.role = new_role                                                        # Меняем роль в модели
+    await db.commit()                                                                   # Сохраняем изменения в PostgreSQL
+    return current_user                                                                 # Возвращаем обновленного юзера
