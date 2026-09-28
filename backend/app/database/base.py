@@ -1,1 +1,5 @@
-# Базовый декларативный класс моделей для корректной генерации миграций Alembic.
+from sqlalchemy.orm import DeclarativeBase
+
+class Base(DeclarativeBase):
+    """Базовый класс для всех моделей SQLAlchemy в проекте."""
+    pass
