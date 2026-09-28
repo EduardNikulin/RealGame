@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from app.api.v1.api import api_router
 
 # Инициализируем наше FastAPI приложение
 app = FastAPI(
@@ -23,6 +24,9 @@ app.add_middleware(
     allow_methods=["*"],              # Разрешаем любые HTTP-методы (GET, POST, PUT, DELETE и т.д.)
     allow_headers=["*"],              # Разрешаем любые HTTP-заголовки
 )
+
+# ПОДКЛЮЧАЕМ РОУТЕР К ПРИЛОЖЕНИЮ С ОБЩИМ ПРЕФИКСОМ /api/v1
+app.include_router(api_router, prefix="/api/v1")
 
 # Простейший тестовый роут, чтобы проверить, что сервер вообще живой
 @app.get("/")
